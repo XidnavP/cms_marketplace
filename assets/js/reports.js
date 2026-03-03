@@ -239,8 +239,9 @@ async function showDetail(transactionId) {
             <td class="text-end">${formatRupiah(row.subtotal)}</td>
             <td>${row.platform}</td>
             <td>${row.nama_toko}</td>
-            <td class="text-end">${row.platform_fee}%</td>
+            <td class="text-end text-danger">${formatRupiah(row.diskon)}</td>
             <td class="text-end text-warning">${formatRupiah(row.net_profit)}</td>
+            <td class="text-end text-success" data-role="admin">${formatRupiah(row.buying_cost)}</td>
             <td class="text-end text-primary" data-role="admin">
               ${formatRupiah(row.gross_profit)}
             </td>
@@ -370,6 +371,7 @@ async function downloadSalesExcel() {
                 Price: row.price,
                 Subtotal: row.subtotal,
                 Service_Fee: row.biaya_layanan,
+                Diskon: row.diskon,
                 Total: row.total
 
             };
@@ -379,6 +381,7 @@ async function downloadSalesExcel() {
 
                 obj.Net_Profit =
                     row.net_profit;
+                obj.final_net_profit = row.final_net_profit;
 
             }
 
