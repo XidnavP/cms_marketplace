@@ -105,7 +105,7 @@ function fillDashboard(data) {
         </td>
         <td>
             <button
-            class="btn btn-sm btn-warning" data-role="admin"
+            class="btn btn-sm btn-danger" data-role="admin"
             onclick="voidTransaction('${row.id}')">
             Void
             </button>
