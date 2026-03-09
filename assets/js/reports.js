@@ -104,11 +104,14 @@ function fillDashboard(data) {
             </button>
         </td>
         <td>
-            <button
-            class="btn btn-sm btn-danger" data-role="admin"
-            onclick="voidTransaction('${row.id}')">
-            Void
-            </button>
+        ${
+            row.status === "CANCEL"
+            ? `<span class="text-danger fw-bold">VOIDED</span>`
+            : `<button onclick="voidTransaction(${row.id})"
+                class="btn btn-danger btn-sm">
+                Void
+                </button>`
+        }
         </td>
         `;
 

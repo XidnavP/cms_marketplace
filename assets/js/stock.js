@@ -86,10 +86,15 @@ window.initStockPage = function () {
 
         // Optional update selling price
         await supabaseClient
-          .schema("inventory")
-          .from("stock")
-          .update({ price })
-          .eq("id", stockId);
+        .schema("inventory")
+        .from("stock")
+        .update({
+          item_name,
+          category,
+          price,
+          buying_price
+        })
+        .eq("id", stockId);
 
         alert("Stock updated");
     }
@@ -120,7 +125,8 @@ window.loadStockData = async function () {
   }
 
   console.log("✅ Stock data:", data);
-
+  window.stockData = data
+  window.renderCategoryFilter(data);
   window.renderStockTable(data);
   window.renderStockSummary(data);
 };
@@ -138,9 +144,9 @@ window.renderStockTable = function (data) {
     return;
   }
 
-  tbody.innerHTML = data.map(item => `
+  tbody.innerHTML = data.map((item, index) => `
     <tr>
-      <td>#${item.id}</td>
+      <td>${index + 1}</td>
       <td>${item.item_name}</td>
       <td>${item.category}</td>
       <td>${item.quantity}</td>
@@ -244,3 +250,36 @@ window.deleteStock = async function (stockId) {
   alert("Stock deleted");
   await loadStockData();
 };
+
+window.renderCategoryFilter = function(data) {
+
+  const select = document.getElementById("categoryFilter");
+  if (!select) return;
+
+  const categories = [...new Set(data.map(i => i.category))];
+
+  select.innerHTML =
+    `<option value="">All Categories</option>` +
+    categories.map(c =>
+      `<option value="${c}">${c}</option>`
+    ).join("");
+};
+
+document.addEventListener("change", function(e){
+
+  if (e.target.id === "categoryFilter") {
+
+    const category = e.target.value;
+
+    let filtered = window.stockData;
+
+    if (category) {
+      filtered = window.stockData.filter(
+        item => item.category === category
+      );
+    }
+
+    window.renderStockTable(filtered);
+  }
+
+});
