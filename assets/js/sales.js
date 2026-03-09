@@ -339,8 +339,10 @@ async function saveSales() {
 
     net_profit: currentNetProfit,               // Final profit
     pure_net_profit: window.currentPureNetProfit, // Product-only profit
+    
+    status: "ACTIVE",
 
-    status: document.getElementById("status").value
+    keterangan: document.getElementById("status").value
   };
 
   const items = [];
