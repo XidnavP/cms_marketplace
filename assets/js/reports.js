@@ -107,7 +107,7 @@ function fillDashboard(data) {
         ${
             row.status === "CANCEL"
             ? `<span class="text-danger fw-bold">VOIDED</span>`
-            : `<button onclick="voidTransaction(${row.id})"
+            : `<button onclick="voidTransaction('${row.id}')"
                 class="btn btn-danger btn-sm">
                 Void
                 </button>`
@@ -117,10 +117,14 @@ function fillDashboard(data) {
 
         tbody.appendChild(tr);
 
-        totalSales += Number(row.total_qty);
-        totalGross += Number(row.gross_profit);
-        totalNet += Number(row.net_profit);
-        totalTxn++;
+        if (row.status !== "CANCEL") {
+
+            totalSales += Number(row.total_qty);
+            totalGross += Number(row.gross_profit);
+            totalNet += Number(row.net_profit);
+            totalTxn++;
+        
+        }
 
     });
 
@@ -250,10 +254,18 @@ async function showDetail(transactionId) {
             <td>${row.platform}</td>
             <td>${row.nama_toko}</td>
             <td class="text-end text-danger">${formatRupiah(row.diskon)}</td>
-            <td class="text-end text-warning">${formatRupiah(row.net_profit)}</td>
+            <td class="text-end text-warning">${
+                row.status === "CANCEL"
+                ? "------"
+                : formatRupiah(row.net_profit)
+            }</td>
             <td class="text-end text-success" data-role="admin">${formatRupiah(row.buying_cost)}</td>
             <td class="text-end text-primary" data-role="admin">
-              ${formatRupiah(row.gross_profit)}
+            ${
+                row.status === "CANCEL"
+                ? "------"
+                : formatRupiah(row.gross_profit)
+            }
             </td>
           </tr>
         `).join("");
@@ -418,22 +430,21 @@ async function downloadSalesExcel() {
     );
 
 }
-
-async function voidTransaction(id) {
+window.voidTransaction = async function(id) {
 
     if (!confirm("Cancel this transaction?")) return;
-  
+
     const { error } = await supabaseClient.rpc(
-      "void_sales_transaction",
-      { p_sales_id: id }
+        "void_sales_transaction",
+        { p_sales_id: id }
     );
-  
+
     if (error) {
-      alert(error.message);
-      return;
+        alert(error.message);
+        return;
     }
-  
+
     alert("Transaction cancelled");
-  
-    loadReport(); // reload table
-  }
+
+    loadDashboard();
+};
