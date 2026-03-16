@@ -311,10 +311,69 @@ function removeRow(btn) {
   recalcGrandTotal();
 }
 
+
+function validateSalesForm() {
+
+  const marketplace = document.getElementById("marketplace").value;
+  const store = document.getElementById("nama_toko").value;
+  const orderNo = document.getElementById("no_pesanan").value.trim();
+
+  if (!marketplace) {
+    alert("Please select a marketplace");
+    return false;
+  }
+
+  if (!store) {
+    alert("Please select a store");
+    return false;
+  }
+
+  if (!orderNo) {
+    alert("Order number is required");
+    return false;
+  }
+
+  // check items
+  const rows = document.querySelectorAll("#itemsBody tr");
+
+  if (rows.length === 0) {
+    alert("Add at least one product");
+    return false;
+  }
+
+  for (let row of rows) {
+
+    const category = row.querySelector(".kategori").value;
+    const product = row.querySelector(".nama-barang").value;
+    const qty = Number(row.querySelector(".qty").value);
+
+    if (!category) {
+      alert("Please select category for all items");
+      return false;
+    }
+
+    if (!product) {
+      alert("Please select product for all items");
+      return false;
+    }
+
+    if (!qty || qty <= 0) {
+      alert("Quantity must be greater than 0");
+      return false;
+    }
+
+  }
+
+  return true;
+
+}
 /* =========================
    SAVE SALES
 ========================= */
 async function saveSales() {
+
+  if (!validateSalesForm()) return;
+
   if(!confirm("Do you want to save the sales?")) return;
   const selectedMarketplace =
     document.getElementById("marketplace")
