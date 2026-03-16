@@ -95,6 +95,7 @@ async function loadPage(page) {
       case "users":
         initUsersPage();
         loadPlatforms();
+        loadStores();
         break;
     }
 

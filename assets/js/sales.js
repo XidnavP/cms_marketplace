@@ -18,6 +18,7 @@ async function initSalesPage() {
     await loadPlatforms2();
     console.log("Platforms loaded successfully");
 
+    await loadStores2();
     addItemRow();
 
   } catch (err) {
@@ -409,4 +410,28 @@ function onCategoryChange(select) {
           </option>`
       ).join("");
 
+}
+
+async function loadStores2() {
+
+  const { data, error } = await supabaseClient
+    .from("master_stores")
+    .select("*")
+    .order("store_name");
+
+  if (error) {
+    console.error("Failed to load stores", error);
+    return;
+  }
+
+  const select = document.getElementById("nama_toko");
+
+  select.innerHTML = `
+    <option value="">-- Select Store --</option>
+    ${data.map(s => `
+      <option value="${s.store_name}">
+        ${s.store_name}
+      </option>
+    `).join("")}
+  `;
 }

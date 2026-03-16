@@ -1,10 +1,40 @@
 let searchTimeout = null;
 let categoryreportList = [];
 
+
+function setDefaultDateFilters() {
+
+    const startInput = document.getElementById("filterStartDate");
+    const endInput = document.getElementById("filterEndDate");
+
+    if (!startInput || !endInput) return;
+
+    const now = new Date();
+
+    const startOfMonth =
+        new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const endOfMonth =
+        new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    const formatDate = (date) => {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        const d = String(date.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+    };
+
+    if (!startInput.value)
+        startInput.value = formatDate(startOfMonth);
+
+    if (!endInput.value)
+        endInput.value = formatDate(endOfMonth);
+
+}
 /* LOAD DASHBOARD */
 async function loadDashboard() {
     await populateCategory();
-
+    setDefaultDateFilters();
     const startdate =
         document.getElementById("filterStartDate")?.value;
 
@@ -17,7 +47,8 @@ async function loadDashboard() {
     const search =
         document.getElementById("filterSearch")?.value || null;
 
-
+    
+        console.log("FILTER:", startdate, enddate);
     try {
 
         const { data, error } =
@@ -96,6 +127,7 @@ function fillDashboard(data) {
         <td>${row.kurir}</td>
         <td class="text-end text-success">${formatRupiah(row.gross_profit)}</td>
         <td class="text-end text-primary" data-role="admin">${formatRupiah(row.net_profit)}</td>
+        <td>${row.keterangan}</td>
         <td>
             <button
             class="btn btn-sm btn-info"
@@ -218,7 +250,8 @@ function formatDate(dateString) {
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-
+     
+        
         loadDashboard();
 
     }
@@ -339,11 +372,18 @@ async function downloadSalesExcel() {
         document.getElementById("filterEndDate").value;
 
     // default to full range if empty
-    if (!fromDate)
-        fromDate = "1900-01-01";
-
-    if (!toDate)
-        toDate = "9999-12-31";
+    if (!fromDate || !toDate) {
+        const now = new Date();
+    
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    
+        if (!fromDate)
+            fromDate = startOfMonth.toISOString().split("T")[0];
+    
+        if (!toDate)
+            toDate = endOfMonth.toISOString().split("T")[0];
+    }
 
     const roles =
         window.CURRENT_USER_ROLES || [];

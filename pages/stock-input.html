@@ -47,12 +47,40 @@
       </div>
     </div>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Filter Category</label>
-    <select id="categoryFilter" class="form-select">
-      <option value="">All Categories</option>
-    </select>
+
+
+   <!-- Filter -->
+   <div class="row mb-4 align-items-end">
+
+    <div class="col-md-5">
+      <label class="form-label">Filter Category</label>
+      <select id="categoryFilter" class="form-select">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+  
+    <div class="col-md-5">
+      <label class="form-label">Search</label>
+      <input
+        type="text"
+        id="stockSearch"
+        class="form-control"
+        placeholder="Search item..."
+      >
+    </div>
+  
+    <div class="col-md-2">
+      <button
+        class="btn btn-success w-100"
+        onclick="downloadStockExcel()">
+        Download Excel
+      </button>
+    </div>
+  
   </div>
+
+
+
   <!-- Stock Table -->
   <div class="card shadow-sm">
     <div class="card-body">

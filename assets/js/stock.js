@@ -117,7 +117,8 @@ window.loadStockData = async function () {
     .schema("inventory")
     .from("stock")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("category", { ascending: true })
+    .order("item_name", { ascending: true });
 
   if (error) {
     console.error("❌ Failed to load stock:", error);
@@ -280,6 +281,88 @@ document.addEventListener("change", function(e){
     }
 
     window.renderStockTable(filtered);
+  }
+
+});
+
+
+window.downloadStockExcel = function () {
+
+  let data = window.stockData || [];
+
+  if (!data.length) {
+    alert("No stock data to export");
+    return;
+  }
+
+  // Apply category filter if selected
+  const category =
+    document.getElementById("categoryFilter")?.value;
+
+  if (category) {
+    data =
+      data.filter(item =>
+        item.category === category
+      );
+  }
+
+  // Format data for Excel
+  const exportData = data.map(item => ({
+    Item: item.item_name,
+    Category: item.category,
+    Quantity: item.quantity,
+    BuyingPrice: item.buying_price,
+    SellingPrice: item.price,
+    Status: item.quantity <= 5 ? "Low" : "OK"
+  }));
+
+  const worksheet =
+    XLSX.utils.json_to_sheet(exportData);
+
+  const workbook =
+    XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "Stock"
+  );
+
+  XLSX.writeFile(
+    workbook,
+    "Stock_List.xlsx"
+  );
+
+};
+
+window.searchStock = function () {
+
+  const keyword =
+    document.getElementById("stockSearch")
+      .value
+      .toLowerCase()
+      .trim();
+
+  let filtered = window.stockData;
+
+  if (keyword) {
+
+    filtered =
+      window.stockData.filter(item =>
+        item.item_name.toLowerCase().includes(keyword) ||
+        item.category.toLowerCase().includes(keyword)
+      );
+
+  }
+
+  window.renderStockTable(filtered);
+
+};
+
+document.addEventListener("input", function(e){
+
+  if (e.target.id === "stockSearch") {
+    searchStock();
   }
 
 });

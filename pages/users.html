@@ -1,40 +1,131 @@
 <div class="content">
-    <div class="container-fluid">
+  <div class="container-fluid p-4">
   
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0">PLATFORM MANAGEMENT</h4>
-        <button class="btn btn-success" onclick="openPlatformModal()">
-          ➕ Add Marketplace
-        </button>
+  <!-- ===================================================== -->
+  <!-- PLATFORM MANAGEMENT -->
+  <!-- ===================================================== -->
+  
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">PLATFORM MANAGEMENT</h4>
+  
+    <button class="btn btn-success" onclick="openPlatformModal()">
+      ➕ Add Marketplace
+    </button>
+  </div>
+  
+  <div class="card shadow-sm mb-5">
+    <div class="card-body">
+  
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+  
+          <thead class="table-dark">
+            <tr>
+              <th>Platform Name</th>
+              <th>Fee Percentage (%)</th>
+              <th>Last Updated</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+  
+          <tbody id="platformTable">
+            <tr>
+              <td colspan="4" class="text-center text-muted">
+                No Marketplace data
+              </td>
+            </tr>
+          </tbody>
+  
+        </table>
       </div>
   
-      <div class="card shadow-sm">
-        <div class="card-body">
+    </div>
+  </div>
   
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead class="table-dark">
-                <tr>
-                  <th>Platform Name</th>
-                  <th>Fee Percentage (%)</th>
-                  <th>Last Updated</th>
-                  <th class="text-end">Action</th>
-                </tr>
-              </thead>
-              <tbody id="platformTable">
-                <tr>
-                  <td colspan="4" class="text-center text-muted">
-                    No Marketplace data
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
   
-        </div>
-      </div>
+  <!-- ===================================================== -->
+  <!-- STORE MANAGEMENT -->
+  <!-- ===================================================== -->
   
-
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">STORE MANAGEMENT</h4>
+  
+    <button class="btn btn-success" onclick="addStore()">
+      ➕ Add Store
+    </button>
+  </div>
+  
+  <div class="card shadow-sm mb-5">
+    <div class="card-body p-0">
+  
+      <table class="table table-bordered mb-0">
+  
+        <thead class="table-light">
+          <tr>
+            <th>No</th>
+            <th>Store Name</th>
+            <th width="120">Action</th>
+          </tr>
+        </thead>
+  
+        <tbody id="storeTable"></tbody>
+  
+      </table>
+  
+    </div>
+  </div>
+  
+  
+  <!-- ===================================================== -->
+  <!-- USER MANAGEMENT -->
+  <!-- ===================================================== -->
+  
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">USER MANAGEMENT</h4>
+  
+    <button class="btn btn-success" onclick="openCreateUserModal()">
+      ➕ Create User
+    </button>
+  </div>
+  
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+  
+      <table class="table table-striped mb-0">
+  
+        <thead class="table-light">
+          <tr>
+            <th>Email</th>
+            <th>User ID</th>
+            <th>Roles</th>
+            <th>Created</th>
+            <th>Status</th>
+            <th width="250">Actions</th>
+          </tr>
+        </thead>
+  
+        <tbody id="userTableBody">
+          <tr>
+            <td colspan="6" class="text-center text-muted">
+              Loading users...
+            </td>
+          </tr>
+        </tbody>
+  
+      </table>
+  
+    </div>
+  </div>
+  
+  
+  </div>
+  </div>
+  
+  
+  <!-- ===================================================== -->
+  <!-- PLATFORM MODAL -->
+  <!-- ===================================================== -->
+  
   <div class="modal fade" id="platformModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -43,156 +134,157 @@
           <h5 class="modal-title" id="platformModalTitle">
             Add Platform
           </h5>
-          <button type="button" class="btn-close"
-            data-bs-dismiss="modal"></button>
+  
+          <button class="btn-close" data-bs-dismiss="modal"></button>
         </div>
   
         <div class="modal-body">
+  
           <form id="platformForm">
   
             <input type="hidden" id="platform_id">
   
             <div class="mb-3">
               <label class="form-label">Marketplace</label>
-              <input id="platform_name"
-                     class="form-control"
-                     required>
+              <input id="platform_name" class="form-control" required>
             </div>
   
             <div class="mb-3">
               <label class="form-label">Fee Percentage (%)</label>
-              <input id="platform_percentage"
-                     type="number"
-                     step="0.01"
-                     class="form-control"
-                     required>
+              <input
+                id="platform_percentage"
+                type="number"
+                step="0.01"
+                class="form-control"
+                required
+              >
             </div>
   
-            <button type="submit"
-                    class="btn btn-primary w-100">
+            <button type="submit" class="btn btn-primary w-100">
               Save
             </button>
   
           </form>
+  
         </div>
   
       </div>
     </div>
   </div>
-
-<div class="container-fluid">
-
-    <!-- TITLE -->
-    <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
-        <h4 class="mb-0">USER MANAGEMENT</h4>
-
-        <button class="btn btn-primary"
-            onclick="openCreateUserModal()">
-            + Create User
-        </button>
-    </div>
-
-
-    <!-- USER TABLE -->
-    <div class="card shadow-sm">
-
-        <div class="card-body p-0">
-
-            <table class="table table-striped mb-0">
-
-                <thead class="table-light">
-                    <tr>
-                        <th>Email</th>
-                        <th>User ID</th>
-                        <th>Roles</th>
-                        <th>Created</th>
-                        <th>Status</th>
-                        <th width="250">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody id="userTableBody">
-
-                    <tr>
-                        <td colspan="5"
-                            class="text-center text-muted">
-                            Loading users...
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!-- CREATE USER MODAL -->
-<div class="modal fade"
-    id="createUserModal"
-    tabindex="-1">
-
+  
+  
+  <!-- ===================================================== -->
+  <!-- CREATE USER MODAL -->
+  <!-- ===================================================== -->
+  
+  <div class="modal fade" id="createUserModal" tabindex="-1">
+  
     <div class="modal-dialog">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5>Create User</h5>
-                <button class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
-            </div>
-
-            <div class="modal-body">
-
-                <div class="mb-3">
-                    <label>Email</label>
-                    <input type="email"
-                        id="newUserEmail"
-                        class="form-control">
-                </div>
-            
-                <div class="mb-3">
-                    <label>Password</label>
-                    <input type="password"
-                        id="newUserPassword"
-                        class="form-control">
-                </div>
-            
-                <!-- ADD THIS -->
-                <div class="mb-3">
-                    <label>Role</label>
-                    <select id="newUserRole" class="form-control">
-                        <option value="admin">admin</option>
-                        <option value="staff">Staff</option>
-                    </select>
-                </div>
-            
-            </div>
-
-            <div class="modal-footer">
-
-                <button class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-                    Cancel
-                </button>
-
-                <button class="btn btn-primary"
-                    onclick="createUser()">
-                    Create
-                </button>
-
-            </div>
-
+      <div class="modal-content">
+  
+        <div class="modal-header">
+          <h5>Create User</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
         </div>
+  
+        <div class="modal-body">
+  
+          <div class="mb-3">
+            <label>Email</label>
+            <input
+              type="email"
+              id="newUserEmail"
+              class="form-control">
+          </div>
+  
+          <div class="mb-3">
+            <label>Password</label>
+            <input
+              type="password"
+              id="newUserPassword"
+              class="form-control">
+          </div>
+  
+          <div class="mb-3">
+            <label>Role</label>
+            <select id="newUserRole" class="form-control">
+              <option value="admin">Admin</option>
+              <option value="staff">Staff</option>
+            </select>
+          </div>
+  
+        </div>
+  
+        <div class="modal-footer">
+  
+          <button
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancel
+          </button>
+  
+          <button
+            class="btn btn-primary"
+            onclick="createUser()">
+            Create
+          </button>
+  
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>
+  <!-- ===================================================== -->
+<!-- STORE MODAL -->
+<!-- ===================================================== -->
+
+<div class="modal fade" id="storeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="storeModalTitle">
+          Add Store
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal">
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <form id="storeForm">
+
+          <input type="hidden" id="store_id">
+
+          <div class="mb-3">
+            <label class="form-label">Store Name</label>
+
+            <input
+              type="text"
+              id="store_name"
+              class="form-control"
+              placeholder="Enter store name"
+              required>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary w-100">
+            Save Store
+          </button>
+
+        </form>
+
+      </div>
 
     </div>
-
-</div>
-</div>
-</div>
+  </div>
+</div>  
